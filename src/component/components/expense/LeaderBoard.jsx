@@ -23,7 +23,7 @@ const LeaderBoard=()=>{
     initializeSDK();
     const doPayment = async () => {
      try {
-            const res=await axios.post("http://localhost:3000/payment/pay",{},{
+            const res=await axios.post("http://3.7.248.76:3000/payment/pay",{},{
                 headers:{
                     "Authorization":token
                 }
@@ -44,14 +44,14 @@ const LeaderBoard=()=>{
 
        const cheackLeaderBoardStatus=async()=>{
           try {
-             const res=await axios.get(`http://localhost:3000/payment/payment-status/${orderId}`,{
+             const res=await axios.get(`http://3.7.248.76:3000/payment/getOrder-status`,{
                 headers:{
                     "authorization":token
                 }
              });
              console.log(res,"hhgfh");
              
-             if(res?.data?.payment[0]?.orderStatus=="SUCCESS"){
+             if(res?.data?.user?.isPremiorUser){
                 
              setLeaderBoardStatus(true)
                
@@ -65,14 +65,12 @@ const LeaderBoard=()=>{
        }
        const getLeaderBoard=async()=>{
           try {
-             const res=await axios.get("http://localhost:3000/leaderBoard/getLeaderBoard",{
+             const res=await axios.get("http://3.7.248.76:3000/users/leaderBoard",{
                 headers:{
                     "authorization":token
                 }
              });
-            setLeaderBoard(res?.data?.leaderBoard)
-          
-            
+            setLeaderBoard(res?.data?.user)
           } catch (error) {
             console.log(error);
             
@@ -95,17 +93,19 @@ const LeaderBoard=()=>{
         },
         {
             title: <CustomText value={"Total Expense"} />,
-            dataIndex: 'totalExpense',
-            key: 'totalExpense',
-            render: (_, text) => <Typography.Text>Rs. {text?.totalExpense}</Typography.Text>
+            dataIndex: 'total_amount',
+            key: 'total_amount',
+            render: (_, text) => <Typography.Text>Rs. {text?.total_amount}</Typography.Text>
         },
         
        
 
     ];
   useEffect(()=>{
-            getLeaderBoard();
             cheackLeaderBoardStatus();
+             getLeaderBoard();
+
+
         },[])
     
     return(

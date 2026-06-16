@@ -12,6 +12,7 @@ import {
 } from '@ant-design/icons';
 import LeaderBoard from "./LeaderBoard"
 import YourExpense from "./YourExpense"
+import CreateYourOwnCategory from "./createYourOwnCategory"
 const Expense = () => {
     const token = Cookies.get("token");
     const [expenseInput, setExpenseInput] = useState({
@@ -28,9 +29,13 @@ const Expense = () => {
     }
     const getExpense = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/expense/getExpense", {
+            const res = await axios.get("http://3.7.248.76:3000/expense/getExpense", {
                 headers: {
                     "Authorization": token
+                },
+                 params:{
+                    page:1,
+                    limit:5
                 }
             });
             setExpense(res?.data?.expenses);
@@ -46,7 +51,7 @@ const Expense = () => {
     const addExpenseHandler = async () => {
         const data = { ...expenseInput }
         try {
-            const res = await axios.post("http://localhost:3000/expense/addExpense", data, {
+            const res = await axios.post("http://3.7.248.76:3000/expense/addExpense", data, {
                 headers: {
                     "Authorization": token
                 }
@@ -74,11 +79,16 @@ const Expense = () => {
 
    
     return (
-        <div className="h-screen pt-10 ">
+        <div className="h-screen overflow-auto  py-10 ">
             {/* <div className="w-[50%]  m-auto flex justify-center items-center"> */}
             <div className="container mx-auto">
+                <Row>
+                    <Col span={24}>
+                    <CreateYourOwnCategory/>
+                    </Col>
+                </Row>
                 <Row  >
-                    <Col span={12}>
+                    <Col span={10}>
                         <div className="flex flex-col items-center  gap-4">
                             <CustomText className={"!text-[30px] text-center"} value={"Add Expense"} />
                             <div className="flex flex-col gap-2">
@@ -108,7 +118,8 @@ const Expense = () => {
                             </div>
                         </div>
                     </Col>
-                    <Col span={12}>
+                   
+                    <Col span={14}>
                         <LeaderBoard />
                     </Col>
                 </Row>

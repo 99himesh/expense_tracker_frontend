@@ -13,7 +13,7 @@ const PaymentStatus=()=>{
     const [orderStatus,setOrderStatus]=useState("")
     const getOrderStatusHandler=async()=>{
         try {
-            const res=await axios.get(`http://localhost:3000/payment/payment-status/${id}`,{
+            const res=await axios.get(`http://3.7.248.76:3000/payment/payment-status/${id}`,{
                 headers:{
                     "authorization":token
                 }

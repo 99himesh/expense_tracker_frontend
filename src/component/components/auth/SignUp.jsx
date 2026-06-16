@@ -21,7 +21,7 @@ const SignUp=()=>{
     const signUpHandler=async()=>{
         const data={...singUpInput}
         try {
-            const res=await axios.post("http://localhost:3000/users/signUp",data);
+            const res=await axios.post("http://3.7.248.76/users/signUp",data);
             console.log(res);
             
             

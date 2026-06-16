@@ -58,7 +58,7 @@ const YourExpense = ({expense,setExpense,totalExpense,setTotalExpense}) => {
 
     const getExpense = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/expense/getExpense", {
+            const res = await axios.get("http://7.248.76:3000/expense/getExpense", {
                 headers: {
                     "Authorization": token
                 },
@@ -67,8 +67,10 @@ const YourExpense = ({expense,setExpense,totalExpense,setTotalExpense}) => {
                     limit:pageSize
                 }
             })
+            console.log(res?.data?.total);
+            
             setExpense(res?.data?.expenses);
-            setTotalExpense(res?.data?.totalCount);
+            setTotalExpense(res?.data?.total);
 
 
         } catch (error) {
@@ -79,7 +81,7 @@ const YourExpense = ({expense,setExpense,totalExpense,setTotalExpense}) => {
 
     const expenseDeleteHandler = async (item) => {
         try {
-            const res = await axios.delete(`http://localhost:3000/expense/deleteExpense/${item?.id}`, {
+            const res = await axios.delete(`http://3.7.248.76:3000/expense/deleteExpense/${item?.id}`, {
                 headers: {
                     "Authorization": token
                 }
