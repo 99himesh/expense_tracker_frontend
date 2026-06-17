@@ -6,6 +6,7 @@ import CustomText from "../../ui/CustomText";
 import { useState } from "react";
 import CustomButton from "../../ui/CustomButton";
 import Cookies from "js-cookie"
+import api from "../../../axios/axios";
 const PaymentStatus=()=>{
     const token=Cookies.get("token");
     const navigate=useNavigate();
@@ -13,7 +14,7 @@ const PaymentStatus=()=>{
     const [orderStatus,setOrderStatus]=useState("")
     const getOrderStatusHandler=async()=>{
         try {
-            const res=await axios.get(`http://3.7.248.76:3000/payment/payment-status/${id}`,{
+            const res=await api.get(`/payment/payment-status/${id}`,{
                 headers:{
                     "authorization":token
                 }

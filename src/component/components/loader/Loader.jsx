@@ -5,7 +5,7 @@ function Loader() {
  <Audio
 height="60"
 width="60"
-color="#4fa94d"
+color="#452E5A"
 ariaLabel="audio-loading"
 wrapperStyle={{}}
 wrapperClass="wrapper-class"

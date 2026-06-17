@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import CustomTable from "../../ui/CustomTable";
 import { Typography } from "antd";
+import api from "../../../axios/axios";
 const LeaderBoard=()=>{
     const [leaderBoardStatus,setLeaderBoardStatus]=useState(false);
     const [leaderBoard,setLeaderBoard]=useState([])
@@ -23,7 +24,7 @@ const LeaderBoard=()=>{
     initializeSDK();
     const doPayment = async () => {
      try {
-            const res=await axios.post("http://3.7.248.76:3000/payment/pay",{},{
+            const res=await api.post("/payment/pay",{},{
                 headers:{
                     "Authorization":token
                 }
@@ -44,7 +45,7 @@ const LeaderBoard=()=>{
 
        const cheackLeaderBoardStatus=async()=>{
           try {
-             const res=await axios.get(`http://3.7.248.76:3000/payment/getOrder-status`,{
+             const res=await api.get(`/payment/getOrder-status`,{
                 headers:{
                     "authorization":token
                 }
@@ -65,7 +66,7 @@ const LeaderBoard=()=>{
        }
        const getLeaderBoard=async()=>{
           try {
-             const res=await axios.get("http://3.7.248.76:3000/users/leaderBoard",{
+             const res=await api.get("/users/leaderBoard",{
                 headers:{
                     "authorization":token
                 }

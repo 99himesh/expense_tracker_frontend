@@ -6,6 +6,7 @@ import axios from "axios";
 import Cookies from "js-cookie"
 import { useState } from "react";
 import Loader from "../loader/loader";
+import api from "../../../axios/axios.jsx";
 const CreateYourOwnCategory=()=>{
     const token=Cookies.get("token");
     const [aiInput,setAiInput]=useState("");
@@ -17,7 +18,7 @@ const CreateYourOwnCategory=()=>{
         setIsloading(true)
         try {
             const data={question:aiInput}
-            const res=await axios.post("http://localhost:3000/ai",data,{
+            const res=await api.post("/ai",data,{
                 headers:{
                      "Authorization":token
                 }
@@ -52,7 +53,7 @@ const CreateYourOwnCategory=()=>{
             </div>
             <div className="flex justify-center  w-[50%] mx-auto max-h-[200px] overflow-auto ">
                {loading && !error ?<Loader/>: <CustomText className={"!text-[14px] text-justify"} value={answer}/>}
-               {error && <CustomText value={`${error.message} ,please try again after some time `} className={"!text-red-600"}/>}
+               {error && <CustomText value={`Gemini 2.5-flash server  is not working properly, Please try again after some time ,sorry for enconvience.${error.message} , `} className={"!text-yellow-500"}/>}
             </div>
         </div>
         </>

@@ -10,12 +10,12 @@ import {
 import { useEffect } from "react";
 import CustomSelect from "../../ui/CustomSelect";
 import CustomPagination from "../../ui/CustomPagination";
+import api from "../../../axios/axios";
 const YourExpense = ({expense,setExpense,totalExpense,setTotalExpense}) => {
     
     const token = Cookies.get("token");
-    const [page,setPage]=useState(1);
     const [pageSize,setPageSize]=useState(5);
-
+    const [page,setPage]=useState(1)
     const expenseColumn = [
         {
             title: <CustomText value={"Id"} />,
@@ -58,7 +58,7 @@ const YourExpense = ({expense,setExpense,totalExpense,setTotalExpense}) => {
 
     const getExpense = async () => {
         try {
-            const res = await axios.get("http://7.248.76:3000/expense/getExpense", {
+            const res = await api.get("/expense/getExpense", {
                 headers: {
                     "Authorization": token
                 },
@@ -81,7 +81,7 @@ const YourExpense = ({expense,setExpense,totalExpense,setTotalExpense}) => {
 
     const expenseDeleteHandler = async (item) => {
         try {
-            const res = await axios.delete(`http://3.7.248.76:3000/expense/deleteExpense/${item?.id}`, {
+            const res = await api.delete(`/expense/deleteExpense/${item?.id}`, {
                 headers: {
                     "Authorization": token
                 }
@@ -118,7 +118,7 @@ const YourExpense = ({expense,setExpense,totalExpense,setTotalExpense}) => {
                   />
                 </div>
                 <CustomTable scroll={{ y: 400 }} columns={expenseColumn} dataSource={expense} />
-                <CustomPagination pageSize={pageSize} setPageSize={setPageSize} onchange={(e)=>{setPage(e)}} total={totalExpense} defaultCurrent={page} />
+                <CustomPagination pageSize={pageSize} setPageSize={setPageSize} onchange={(e)=>{setPage(e)}} total={totalExpense} defaultCurrent={page}/>
             </div>
         </>
     )

@@ -5,6 +5,7 @@ import CustomText from "../../ui/CustomText";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import Cookies from "js-cookie"
+import api from "../../../axios/axios";
 const Login=()=>{
     const navigate=useNavigate()
     const [loginInput,setloginInput]=useState({
@@ -25,7 +26,7 @@ const Login=()=>{
        
         
         try {
-            const res=await axios.post("http://3.7.248.76:3000/users/login",data);
+            const res=await api.post("/users/login",data);
             if(res.status==200){
                 console.log(res.data.token);
                 Cookies.set("token",res.data.token)

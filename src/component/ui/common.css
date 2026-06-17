@@ -10,6 +10,10 @@
 .no-spinner {
   -moz-appearance: textfield;
 }
+ .ant-pagination-item:hover{
+  background-color: white!important;
+
+}
 
 
 

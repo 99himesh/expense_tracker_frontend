@@ -13,6 +13,8 @@ import {
 import LeaderBoard from "./LeaderBoard"
 import YourExpense from "./YourExpense"
 import CreateYourOwnCategory from "./createYourOwnCategory"
+import api from "../../../axios/axios"
+import { toast } from "react-toastify"
 const Expense = () => {
     const token = Cookies.get("token");
     const [expenseInput, setExpenseInput] = useState({
@@ -20,6 +22,7 @@ const Expense = () => {
         description: "",
         category: ""
     });
+
     const [expense, setExpense] = useState([]);
     const [totalExpense,setTotalExpense]=useState(null)
 
@@ -29,17 +32,17 @@ const Expense = () => {
     }
     const getExpense = async () => {
         try {
-            const res = await axios.get("http://3.7.248.76:3000/expense/getExpense", {
+            const res = await api.get("/expense/getExpense", {
                 headers: {
                     "Authorization": token
                 },
                  params:{
-                    page:1,
+                    page:page,
                     limit:5
                 }
             });
             setExpense(res?.data?.expenses);
-            setTotalExpense(res?.data?.totalCount);
+            setTotalExpense(res?.data?.total);
             
 
 
@@ -51,20 +54,22 @@ const Expense = () => {
     const addExpenseHandler = async () => {
         const data = { ...expenseInput }
         try {
-            const res = await axios.post("http://3.7.248.76:3000/expense/addExpense", data, {
+            const res = await api.post("/expense/addExpense", data, {
                 headers: {
                     "Authorization": token
                 }
             })
 
+console.log(res,"vjbdfvjhb");
 
-            if (res.status == 201) {
+            if (res?.data?.success) {
                 getExpense();
                 setExpenseInput({
                     expenseAmount: null,
                     description: "",
                     category: ""
-                })
+                });
+                toast.success(res.message)
             }
         } catch (error) {
             console.log(error);
@@ -123,7 +128,7 @@ const Expense = () => {
                         <LeaderBoard />
                     </Col>
                 </Row>
-                 <YourExpense setExpense={setExpense} expense={expense} totalExpense={totalExpense} setTotalExpense={setTotalExpense}/>
+                 <YourExpense  setExpense={setExpense} expense={expense} totalExpense={totalExpense} setTotalExpense={setTotalExpense}/>
             </div>
         </div>
 

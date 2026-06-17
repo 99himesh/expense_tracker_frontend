@@ -4,6 +4,7 @@ import CustomInput from "../../ui/CustomInput";
 import CustomText from "../../ui/CustomText";
 import { useState } from "react";
 import { Link } from "react-router";
+import api from "../../../axios/axios";
 
 const SignUp=()=>{
     const [singUpInput,setSignUpInput]=useState({
@@ -21,7 +22,7 @@ const SignUp=()=>{
     const signUpHandler=async()=>{
         const data={...singUpInput}
         try {
-            const res=await axios.post("http://3.7.248.76/users/signUp",data);
+            const res=await api.post("/users/signUp",data);
             console.log(res);
             
             

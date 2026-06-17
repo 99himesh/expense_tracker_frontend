@@ -7,8 +7,8 @@ const onShowSizeChange = (current, pageSz) => {
 };
     return(
     <>
-       <div  className="flex justify-center items-center w-[90%] mx-auto pt-5">
-        <Pagination showSizeChanger  pageSizeOptions={[5,8,10,15]} onShowSizeChange={onShowSizeChange} pageSize={pageSize} onChange={onchange}  total={total}  />
+       <div  className=".pagination  flex justify-center items-center w-[90%] mx-auto pt-5">
+        <Pagination  showSizeChanger  pageSizeOptions={[5,8,10,15]} onShowSizeChange={onShowSizeChange} pageSize={pageSize} onChange={onchange}  total={total}  />
         </div>
           {/* <Pagination
       showSizeChanger
