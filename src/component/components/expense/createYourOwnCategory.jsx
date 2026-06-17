@@ -5,7 +5,7 @@ import CustomButton from "../../ui/CustomButton";
 import axios from "axios";
 import Cookies from "js-cookie"
 import { useState } from "react";
-import Loader from "../loader/loader";
+import Loader from "../loader/Loader";
 import api from "../../../axios/axios.jsx";
 const CreateYourOwnCategory=()=>{
     const token=Cookies.get("token");
