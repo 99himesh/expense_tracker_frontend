@@ -30,7 +30,7 @@ const Login=()=>{
             if(res.status==200){
                 console.log(res.data.token);
                 Cookies.set("token",res.data.token)
-                navigate("/expense")
+                navigate("/")
             }
         } catch (error) {
             console.log(error.message);
@@ -55,6 +55,9 @@ const Login=()=>{
                </div>
                <div className="text-[#fff] flex justify-center">
                <Link to={"/signUp"}>Dont have Account? Sign Up</Link>
+               </div>
+               <div className="text-[#fff] flex justify-center">
+               <Link to={"/forget-password"}>Forget Password ?</Link>
                </div>
                
          </div>

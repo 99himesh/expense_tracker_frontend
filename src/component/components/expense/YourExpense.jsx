@@ -67,8 +67,6 @@ const YourExpense = ({expense,setExpense,totalExpense,setTotalExpense}) => {
                     limit:pageSize
                 }
             })
-            console.log(res?.data?.total);
-            
             setExpense(res?.data?.expenses);
             setTotalExpense(res?.data?.total);
 

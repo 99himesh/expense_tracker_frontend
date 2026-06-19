@@ -5,17 +5,21 @@ import CustomText from "../../ui/CustomText"
 import axios from "axios"
 import CustomSelect from "../../ui/CustomSelect"
 import CustomTable from "../../ui/CustomTable"
-import { Col, Row, Typography } from "antd"
+import { Button, Col, Popover, Row, Typography } from "antd"
 import Cookies from "js-cookie"
 import {
-    DeleteOutlined
+    ArrowDownOutlined,
+    DeleteOutlined,
+    LoginOutlined
 } from '@ant-design/icons';
 import LeaderBoard from "./LeaderBoard"
 import YourExpense from "./YourExpense"
 import CreateYourOwnCategory from "./createYourOwnCategory"
 import api from "../../../axios/axios"
 import { toast } from "react-toastify"
+import { useNavigate } from "react-router"
 const Expense = () => {
+    const navigate=useNavigate();
     const token = Cookies.get("token");
     const [expenseInput, setExpenseInput] = useState({
         expenseAmount: null,
@@ -30,6 +34,11 @@ const Expense = () => {
         const { name, value } = e.target;
         setExpenseInput({ ...expenseInput, [name]: value })
     }
+
+    const logoutHandler=()=>{
+        Cookies.remove("token")
+        navigate("/login")
+    }
     const getExpense = async () => {
         try {
             const res = await api.get("/expense/getExpense", {
@@ -37,7 +46,7 @@ const Expense = () => {
                     "Authorization": token
                 },
                  params:{
-                    page:page,
+                    page:1,
                     limit:5
                 }
             });
@@ -84,7 +93,8 @@ console.log(res,"vjbdfvjhb");
 
    
     return (
-        <div className="h-screen overflow-auto  py-10 ">
+        <div className="relative">
+        <div className="h-screen overflow-auto  py-10  ">
             {/* <div className="w-[50%]  m-auto flex justify-center items-center"> */}
             <div className="container mx-auto">
                 <Row>
@@ -130,8 +140,20 @@ console.log(res,"vjbdfvjhb");
                 </Row>
                  <YourExpense  setExpense={setExpense} expense={expense} totalExpense={totalExpense} setTotalExpense={setTotalExpense}/>
             </div>
+            
+            
         </div>
-
+        <div className="absolute bottom-5 right-32">
+                <div className="flex  gap-2">
+                <Popover content="Logout">
+               <Button onClick={()=>{logoutHandler()}}  className="!bg-red-400 !border-none !h-[40px] !w-[40px] !rounded-full rotate-[90deg] " ><LoginOutlined style={{color:"white",fontSize:"18px"}}/></Button>
+              </Popover>
+               <Popover content="Download expense">
+            <Button  className="!bg-green-600 !border-none !h-[40px] !w-[40px] !rounded-full  " ><ArrowDownOutlined style={{color:"white",fontSize:"18px"}}/></Button>
+           </Popover>
+             </div>
+            </div>
+</div>
 
 
 

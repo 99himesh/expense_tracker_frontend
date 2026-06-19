@@ -41,7 +41,7 @@ const PaymentStatus=()=>{
            <CustomText className={"!text-[30px]"} value={`OrderId: ${id}`}/>
            <CustomText className={"!text-[30px] !text-green-400"} value={`Order Status: ${orderStatus}`}/>
             <CustomText className={"!text-[14px]"} value={"Now you are enjoy yourLeaderbord for watch top spend expenses"}/>
-            <CustomButton onclick={()=>{navigate("/expense")}} value={"Enjoy Leaderboard"}/>
+            <CustomButton onclick={()=>{navigate("/")}} value={"Enjoy Leaderboard"}/>
           </div>
         </div>
     )

@@ -5,6 +5,9 @@ import LoginPage from './component/pages/LoginPage'
 import ExpensePage from './component/pages/ExpensePage'
 import PaymentStatus from './component/components/expense/PaymentStatus'
 import { ToastContainer } from 'react-toastify';
+import Protected from './component/protected/Protected'
+import ForgetPasswordPage from './component/pages/ForgetPasswordPage'
+import NewPasswordPage from './component/pages/NewPasswordPage'
 function App() {
   
 
@@ -14,8 +17,14 @@ function App() {
     <Routes>
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<ExpensePage />} />  
-        <Route path="/payment-status/:id" element={<PaymentStatus />} />  
+        <Route path="/forget-password" element={<ForgetPasswordPage />} />
+        <Route path="/new-password/:id" element={<NewPasswordPage />} />
+        <Route path="*" element={<LoginPage />} />
+        
+        
+        <Route path="*" element={<Protected><ExpensePage /></Protected>} />  
+        <Route path="/" element={<Protected><ExpensePage /></Protected>} />  
+        <Route path="/payment-status/:id" element={<Protected><PaymentStatus /></Protected>} />  
            
       </Routes>
 
