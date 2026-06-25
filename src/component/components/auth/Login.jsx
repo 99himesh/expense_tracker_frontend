@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import Cookies from "js-cookie"
 import api from "../../../axios/axios";
+import { toast } from "react-toastify";
 const Login=()=>{
     const navigate=useNavigate()
     const [loginInput,setloginInput]=useState({
@@ -27,13 +28,16 @@ const Login=()=>{
         
         try {
             const res=await api.post("/users/login",data);
-            if(res.status==200){
+            if(res.data.success){
                 console.log(res.data.token);
                 Cookies.set("token",res.data.token)
                 navigate("/")
+                toast.success(res.data.message)
             }
         } catch (error) {
             console.log(error.message);
+            toast.error(error.message)
+
             
         }
     }

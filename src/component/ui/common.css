@@ -1,6 +1,6 @@
 .custom-table .ant-table-thead  th  {  background:#452E5A!important; }
-.custom-table table{  border: 1px solid #E6E7E9; border-radius: 10px; }
-.ant-modal-content{background-color: #EFE6DC!important;}
+/* .custom-table table{  border: 1px solid #E6E7E9; border-radius: 10px; } */
+/* .ant-modal-content{background-color: #EFE6DC!important;} */
 
 .no-spinner::-webkit-inner-spin-button,
 .no-spinner::-webkit-outer-spin-button {
@@ -10,7 +10,11 @@
 .no-spinner {
   -moz-appearance: textfield;
 }
- .ant-pagination-item:hover{
+ .ant-pagination-item{
+  background-color: white!important;
+
+}
+.ant-pagination-item-link{
   background-color: white!important;
 
 }

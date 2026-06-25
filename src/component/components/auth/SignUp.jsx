@@ -3,10 +3,12 @@ import CustomButton from "../../ui/CustomButton";
 import CustomInput from "../../ui/CustomInput";
 import CustomText from "../../ui/CustomText";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import api from "../../../axios/axios";
+import { toast } from "react-toastify";
 
 const SignUp=()=>{
+    const navigate=useNavigate()
     const [singUpInput,setSignUpInput]=useState({
         name:"",
         email:"",
@@ -24,11 +26,15 @@ const SignUp=()=>{
         try {
             const res=await api.post("/users/signUp",data);
             console.log(res);
+            if(res.data.success){
+            toast.success(res.data.message)
+            navigate("/login")
+            }
             
             
         } catch (error) {
             console.log(error.message);
-            
+              toast.error(error.message)
         }
     }
     return(

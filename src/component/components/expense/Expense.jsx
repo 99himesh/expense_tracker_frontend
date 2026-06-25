@@ -18,27 +18,51 @@ import CreateYourOwnCategory from "./createYourOwnCategory"
 import api from "../../../axios/axios"
 import { toast } from "react-toastify"
 import { useNavigate } from "react-router"
+import FooterExpense from "./FooterExpense"
+import DownloadedExpense from "./DownloadesExpenses"
+import DownloadedExpenses from "./DownloadesExpenses"
+import AddExpense from "./AddExpense"
 const Expense = () => {
+    const [leaderBoardStatus,setLeaderBoardStatus]=useState(false);
+    const [addExpenseModel,setAddExpenseModel]=useState(false)
     const navigate=useNavigate();
     const token = Cookies.get("token");
     const [expenseInput, setExpenseInput] = useState({
         expenseAmount: null,
         description: "",
-        category: ""
+        category: null
     });
 
     const [expense, setExpense] = useState([]);
     const [totalExpense,setTotalExpense]=useState(null)
 
     const expenseInputHandler = (e) => {
+
         const { name, value } = e.target;
         setExpenseInput({ ...expenseInput, [name]: value })
     }
-
-    const logoutHandler=()=>{
-        Cookies.remove("token")
-        navigate("/login")
-    }
+ const cheackLeaderBoardStatus=async()=>{
+          try {
+             const res=await api.get(`/payment/getOrder-status`,{
+                headers:{
+                    "authorization":token
+                }
+             });
+             console.log(res,"hhgfh");
+             
+             if(res?.data?.user?.isPremiorUser){
+                
+             setLeaderBoardStatus(true)
+               
+             }
+          
+            
+          } catch (error) {
+            console.log(error);
+            
+          }
+       }
+   
     const getExpense = async () => {
         try {
             const res = await api.get("/expense/getExpense", {
@@ -69,7 +93,6 @@ const Expense = () => {
                 }
             })
 
-console.log(res,"vjbdfvjhb");
 
             if (res?.data?.success) {
                 getExpense();
@@ -78,6 +101,7 @@ console.log(res,"vjbdfvjhb");
                     description: "",
                     category: ""
                 });
+                setAddExpenseModel(false)
                 toast.success(res.message)
             }
         } catch (error) {
@@ -86,10 +110,13 @@ console.log(res,"vjbdfvjhb");
         }
     }
     
+console.log(leaderBoardStatus,"dsfsdfsd");
 
   
 
-
+useEffect(()=>{
+    cheackLeaderBoardStatus();
+},[])
 
    
     return (
@@ -102,57 +129,25 @@ console.log(res,"vjbdfvjhb");
                     <CreateYourOwnCategory/>
                     </Col>
                 </Row>
-                <Row  >
-                    <Col span={10}>
-                        <div className="flex flex-col items-center  gap-4">
-                            <CustomText className={"!text-[30px] text-center"} value={"Add Expense"} />
-                            <div className="flex flex-col gap-2">
-                                <CustomText value={"ExpenseAmount"} />
-                                <CustomInput name="expenseAmount" value={expenseInput?.expenseAmount} onchange={(e) => { expenseInputHandler(e) }} className={"!w-[300px]"} />
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <CustomText value={"Description"} />
-                                <CustomInput name="description" value={expenseInput?.description} onchange={(e) => { expenseInputHandler(e) }} className={"!w-[300px]"} />
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <CustomText value={"Category"} />
-                                {/* <CustomInput name="category" value={expenseInput?.category} onchange={(e)=>{expenseInputHandler(e)}} className={"!w-[300px]"} /> */}
-                                <CustomSelect
-                                    className="!w-[300px]"
-                                    onchange={(e) => { setExpenseInput({ ...expenseInput, category: e }) }}
-                                    value={expenseInput.category}
-                                    options={[
-                                        { label: "Food", value: "food" },
-                                        { label: "Groceries", value: "groceries" },
-                                        { label: "Rent", value: "rent" },
-                                        { label: "Water bill", value: "water bill" }
-                                    ]} />
-                            </div>
-                            <div className="flex justify-center pt-3">
-                                <CustomButton onclick={() => { addExpenseHandler() }} value={"Add Expense"} />
-                            </div>
-                        </div>
+                <Row gutter={[20,20]} >
+                    <Col span={8}>
+                    <DownloadedExpense leaderBoardStatus={leaderBoardStatus}/>
+                        {/* <AddExpense expenseInputHandler={expenseInputHandler} expenseInput={expenseInput} setExpenseInput={setExpenseInput}  addExpenseHandler={addExpenseHandler}/> */}
                     </Col>
                    
-                    <Col span={14}>
-                        <LeaderBoard />
+                    <Col span={16}>
+                        <LeaderBoard leaderBoardStatus={leaderBoardStatus} />
                     </Col>
                 </Row>
-                 <YourExpense  setExpense={setExpense} expense={expense} totalExpense={totalExpense} setTotalExpense={setTotalExpense}/>
+               <YourExpense setAddExpenseModel={setAddExpenseModel} addExpenseModel={addExpenseModel} expenseInputHandler={expenseInputHandler} expenseInput={expenseInput} setExpenseInput={setExpenseInput}  addExpenseHandler={addExpenseHandler}  setExpense={setExpense} expense={expense} totalExpense={totalExpense} setTotalExpense={setTotalExpense}/>
+                     
+           
             </div>
             
+            <FooterExpense leaderBoardStatus={leaderBoardStatus}/>
             
         </div>
-        <div className="absolute bottom-5 right-32">
-                <div className="flex  gap-2">
-                <Popover content="Logout">
-               <Button onClick={()=>{logoutHandler()}}  className="!bg-red-400 !border-none !h-[40px] !w-[40px] !rounded-full rotate-[90deg] " ><LoginOutlined style={{color:"white",fontSize:"18px"}}/></Button>
-              </Popover>
-               <Popover content="Download expense">
-            <Button  className="!bg-green-600 !border-none !h-[40px] !w-[40px] !rounded-full  " ><ArrowDownOutlined style={{color:"white",fontSize:"18px"}}/></Button>
-           </Popover>
-             </div>
-            </div>
+       
 </div>
 
 

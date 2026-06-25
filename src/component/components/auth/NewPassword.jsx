@@ -8,7 +8,6 @@ import Cookies from "js-cookie"
 import api from "../../../axios/axios";
 const NewPassword=()=>{
     const {id}=useParams()
-  console.log(id);
   
     const [newPasswordInput,setNewPasswordInput]=useState({
         password:"",

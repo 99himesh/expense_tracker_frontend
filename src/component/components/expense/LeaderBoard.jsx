@@ -9,8 +9,8 @@ import { useState } from "react";
 import CustomTable from "../../ui/CustomTable";
 import { Typography } from "antd";
 import api from "../../../axios/axios";
-const LeaderBoard=()=>{
-    const [leaderBoardStatus,setLeaderBoardStatus]=useState(false);
+import { formatDate } from "../../../constatnts/constants";
+const LeaderBoard=({leaderBoardStatus})=>{
     const [leaderBoard,setLeaderBoard]=useState([])
     const [orderId,setOrderId]=useState(null);
     const navigate=useNavigate();
@@ -43,27 +43,7 @@ const LeaderBoard=()=>{
     };
 
 
-       const cheackLeaderBoardStatus=async()=>{
-          try {
-             const res=await api.get(`/payment/getOrder-status`,{
-                headers:{
-                    "authorization":token
-                }
-             });
-             console.log(res,"hhgfh");
-             
-             if(res?.data?.user?.isPremiorUser){
-                
-             setLeaderBoardStatus(true)
-               
-             }
-          
-            
-          } catch (error) {
-            console.log(error);
-            
-          }
-       }
+      
        const getLeaderBoard=async()=>{
           try {
              const res=await api.get("/users/leaderBoard",{
@@ -90,20 +70,29 @@ const LeaderBoard=()=>{
             title: <CustomText value={"Name"} />,
             dataIndex: 'name',
             key: 'name',
+            width:300,
             render: (_, text, idx) => <Typography.Text>{text?.name}</Typography.Text>
         },
         {
             title: <CustomText value={"Total Expense"} />,
             dataIndex: 'total_amount',
             key: 'total_amount',
+            align:"start",
+            width:300,
             render: (_, text) => <Typography.Text>Rs. {text?.total_amount}</Typography.Text>
         },
+        {
+            title: <CustomText value={"Date"} />,
+            dataIndex: 'createdAt',
+            key: 'createdAt',
+            align:"center",
+            render: (_, text) => <Typography.Text>{formatDate(text.createdAt)}</Typography.Text>
+        }
         
        
 
     ];
   useEffect(()=>{
-            cheackLeaderBoardStatus();
              getLeaderBoard();
 
 
@@ -121,11 +110,9 @@ const LeaderBoard=()=>{
         </div>
         </div>)
         :(
-            <div>
-                <div className="flex justify-center  gap-4">
-                <CustomText className={"!text-[30px] text-center"} value={"You are a premium user"}/>
-                </div>
-                <div className="flex justify-center items-center pt-5">
+            <div className="flex flex-col gap-3 mt-5">
+                <CustomText className={"!text-[24px] "} value={"You are a premium user"}/>
+                <div className="flex justify-center items-center ">
                     <CustomTable scroll={{ y:400 }} columns={leaderBoardColumn} dataSource={leaderBoard} />
                 
                 </div>

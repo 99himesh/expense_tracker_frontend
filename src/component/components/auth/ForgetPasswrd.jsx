@@ -6,7 +6,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import Cookies from "js-cookie"
 import api from "../../../axios/axios";
+import { toast } from "react-toastify";
 const ForgetPassword=()=>{
+    const navigate=useNavigate()
   
     const [forgetPassswordinput,setForgetPasswordInput]=useState({
         email:""
@@ -22,9 +24,15 @@ const ForgetPassword=()=>{
 
         const forgetPasswordHandler=async()=>{
             try {const data={...forgetPassswordinput}
-                const res=await api.post("/users/send-forget-password-link",data)
+                const res=await api.post("/users/send-forget-password-link",data);
+                if(res.data.success){
+                    toast.success(res.data.message);
+                    navigate("login")
+                }
             } catch (error) {
                 console.log(error); 
+                    toast.error(error.message)
+
             }
         }
 

@@ -11,11 +11,11 @@ const CustomModal = ({footer,open,setOpen,value,modalBody,width,closeIcon}) => {
     }, 2000);
   };
   return (
-    <div>
+    <div className='bg-[#000]'>
      
       <Modal
         width={width}
-        title={<CustomText className={"!text-[16px] font-[600]"} value={value}/>}
+        title={<CustomText className={"!text-[16px]  font-[600]"} value={value}/>}
         open={open}
         onOk={handleOk}
         onCancel={()=>{setOpen(false)}}
