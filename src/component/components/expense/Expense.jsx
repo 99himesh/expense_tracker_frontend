@@ -85,6 +85,9 @@ const Expense = () => {
         }
     }
     const addExpenseHandler = async () => {
+        if(!expenseInput.expenseAmount || !expenseInput.description || !expenseInput.category){
+            return toast.error("Please fill all fields")
+        }
         const data = { ...expenseInput }
         try {
             const res = await api.post("/expense/addExpense", data, {
@@ -102,10 +105,12 @@ const Expense = () => {
                     category: ""
                 });
                 setAddExpenseModel(false)
-                toast.success(res.message)
+                toast.success(res?.data?.message)
             }
         } catch (error) {
             console.log(error);
+                toast.error(error.message)
+
 
         }
     }
@@ -126,7 +131,7 @@ useEffect(()=>{
             <div className="container mx-auto">
                 <Row>
                     <Col span={24}>
-                    <CreateYourOwnCategory/>
+                    <CreateYourOwnCategory leaderBoardStatus={leaderBoardStatus}/>
                     </Col>
                 </Row>
                 <Row gutter={[20,20]} >

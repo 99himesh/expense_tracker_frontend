@@ -23,6 +23,9 @@ const ForgetPassword=()=>{
         }
 
         const forgetPasswordHandler=async()=>{
+            if(!forgetPassswordinput.email ){
+               return toast.error("Please fill all fields")
+              }
             try {const data={...forgetPassswordinput}
                 const res=await api.post("/users/send-forget-password-link",data);
                 if(res.data.success){

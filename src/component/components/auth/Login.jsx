@@ -23,6 +23,10 @@ const Login=()=>{
     }
 
     const loginHandler=async()=>{
+         if(!loginInput.email || !loginInput.password){
+           return toast.error("Please fill all fields")
+
+        }
         const data={...loginInput};
        
         

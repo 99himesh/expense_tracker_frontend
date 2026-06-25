@@ -6,9 +6,10 @@ import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import Cookies from "js-cookie"
 import api from "../../../axios/axios";
+import { toast } from "react-toastify";
 const NewPassword=()=>{
     const {id}=useParams()
-  
+    const navigate=useNavigate()
     const [newPasswordInput,setNewPasswordInput]=useState({
         password:"",
         retypePassword:""
@@ -23,6 +24,14 @@ const NewPassword=()=>{
     }
 
     const newPasswordHandler=async()=>{
+          if(!newPasswordInput.password || !newPasswordInput.retypePassword){
+                   return toast.error("Please fill all fields")
+                }
+                if(newPasswordInput.password !== newPasswordInput.retypePassword){
+                   return toast.error("Password are mismatch");
+                   setNewPasswordInput({...newPasswordInput,retypePassword:""})
+                }
+        
         const data={password:newPasswordInput.password}
          try {
             const res=await api.post("users/set-new-password",data,{
@@ -30,9 +39,14 @@ const NewPassword=()=>{
                     "token":id
                 }
             });
+            if(res.data.success){
+                toast.success(res.data.message);
+                navigate("/login")
+            }
             
          } catch (error) {
             console.log(error);
+            toast.error(error.message)
             
          }
          
@@ -45,7 +59,7 @@ const NewPassword=()=>{
               <div className="flex flex-col gap-4">
                 <CustomText className={"!text-[30px] text-center"} value={"New Password"}/>
                <div className="flex flex-col gap-2">
-                <CustomText value={"Pawword"}/>
+                <CustomText value={"Password"}/>
                 <CustomInput name="password" value={newPasswordInput?.password} onchange={(e)=>{newPasswordInputHandler(e)}} className={"!w-[300px]"} />
                </div>
                <div className="flex flex-col gap-2">

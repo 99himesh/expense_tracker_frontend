@@ -22,6 +22,10 @@ const SignUp=()=>{
     }
 
     const signUpHandler=async()=>{
+        if(!singUpInput.name || !singUpInput.email || !singUpInput.password){
+           return toast.error("Please fill all fields")
+
+        }
         const data={...singUpInput}
         try {
             const res=await api.post("/users/signUp",data);

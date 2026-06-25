@@ -1,4 +1,4 @@
-import { Input } from "antd";
+import { Input, Popover } from "antd";
 import CustomText from "../../ui/CustomText";
 import CustomInput from "../../ui/CustomInput";
 import CustomButton from "../../ui/CustomButton";
@@ -7,13 +7,15 @@ import Cookies from "js-cookie"
 import { useState } from "react";
 import Loader from "../loader/Loader";
 import api from "../../../axios/axios.jsx";
-const CreateYourOwnCategory=()=>{
+import { toast } from "react-toastify";
+const CreateYourOwnCategory=({leaderBoardStatus})=>{
     const token=Cookies.get("token");
     const [aiInput,setAiInput]=useState("");
     const [loading,setIsloading]=useState(false);
     const [answer,setAnswer]=useState("");
-     const [error,setError]=useState("")
+    const [error,setError]=useState("")
     const aicategoryHandler=async()=>{
+        if(!aiInput) return;
         setError("")
         setIsloading(true)
         try {
@@ -36,7 +38,8 @@ const CreateYourOwnCategory=()=>{
         } catch (error) {
             setIsloading(false)
             console.log(error);
-             setError(error)
+             setError(error);
+             toast.error("Gemini 2.5-flash server  is not working properly")
         }
     }
 
@@ -49,7 +52,11 @@ const CreateYourOwnCategory=()=>{
             <CustomText className={"!text-[30px] text-center"} value={"Create your own Category with AI"}/>
             <div className="w-[50%] mx-auto py-3 flex items-center gap-3">
                 <CustomInput value={aiInput} onchange={(e)=>{setAiInput(e.target.value)}} placeholder={"Ask your category with ai"}/>
-                <CustomButton onclick={aicategoryHandler} className={"h-[40px]"} value={"Submit"}/>
+                <Popover   content={leaderBoardStatus?"Ask with AI":"Please buy a premium membership"}>
+                    <div>
+                <CustomButton disable={!leaderBoardStatus?true:false} onclick={aicategoryHandler} className={"h-[40px]"} value={"Submit"}/>
+           
+           </div> </Popover>
             </div>
             <div className="flex justify-center  w-[50%] mx-auto max-h-[200px] overflow-auto ">
                {loading && !error ?<Loader/>: <CustomText className={"!text-[14px] text-justify"} value={answer}/>}
