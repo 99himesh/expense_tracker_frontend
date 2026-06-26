@@ -85,7 +85,7 @@ const Expense = () => {
         }
     }
     const addExpenseHandler = async () => {
-        if(!expenseInput.expenseAmount || !expenseInput.description || !expenseInput.category){
+        if(!expenseInput.expenseAmount || !expenseInput.category){
             return toast.error("Please fill all fields")
         }
         const data = { ...expenseInput }

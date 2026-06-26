@@ -44,7 +44,7 @@ const YourExpense = ({expense,setExpense,totalExpense,setTotalExpense,expenseInp
             title: <CustomText value={"Description"} />,
             dataIndex: 'description',
             key: 'description',
-            render: (_, text) => <Typography.Text>{text.description}</Typography.Text>
+            render: (_, text) => <Typography.Text>{text.description ?text.description:  "-"}</Typography.Text>
         },
         
             {
