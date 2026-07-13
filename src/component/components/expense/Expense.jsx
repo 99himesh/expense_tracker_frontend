@@ -30,7 +30,7 @@ const Expense = () => {
     const [expenseInput, setExpenseInput] = useState({
         expenseAmount: null,
         description: "",
-        category: null
+        category: "food"
     });
 
     const [expense, setExpense] = useState([]);
