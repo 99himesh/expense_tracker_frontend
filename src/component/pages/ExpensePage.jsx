@@ -4,7 +4,6 @@ const ExpensePage=()=>{
     return(
         <div className="bg-[#000] ">
         <Expense/>
-        
         </div>
     )
 }

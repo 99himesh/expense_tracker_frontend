@@ -30,7 +30,7 @@ const ForgetPassword=()=>{
                 const res=await api.post("/users/send-forget-password-link",data);
                 if(res.data.success){
                     toast.success(res.data.message);
-                    navigate("login")
+                    navigate("/login")
                 }
             } catch (error) {
                 console.log(error); 

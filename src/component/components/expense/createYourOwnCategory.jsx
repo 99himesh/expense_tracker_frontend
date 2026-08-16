@@ -56,7 +56,8 @@ const CreateYourOwnCategory=({leaderBoardStatus})=>{
                     <div>
                 <CustomButton disable={!leaderBoardStatus?true:false} onclick={aicategoryHandler} className={"h-[40px]"} value={"Submit"}/>
            
-           </div> </Popover>
+           </div> 
+           </Popover>
             </div>
             <div className="flex justify-center  w-[50%] mx-auto max-h-[200px] overflow-auto ">
                {loading && !error ?<Loader/>: <CustomText className={"!text-[14px] text-justify"} value={answer}/>}

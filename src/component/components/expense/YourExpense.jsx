@@ -91,7 +91,7 @@ const YourExpense = ({expense,setExpense,totalExpense,setTotalExpense,expenseInp
 
     const expenseDeleteHandler = async (item) => {
         try {
-            const res = await api.delete(`/expense/deleteExpense/${item?.id}`, {
+            const res = await api.delete(`/expense/deleteExpense/${item?._id}`, {
                 headers: {
                     "Authorization": token
                 }
@@ -108,7 +108,6 @@ const YourExpense = ({expense,setExpense,totalExpense,setTotalExpense,expenseInp
         }
 
     }
-  console.log(totalExpense);
   
     useEffect(() => {
         getExpense();
