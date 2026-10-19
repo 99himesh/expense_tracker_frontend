@@ -24,7 +24,7 @@ function App() {
         
         <Route path="*" element={<Protected><ExpensePage /></Protected>} />  
         <Route path="/" element={<Protected><ExpensePage /></Protected>} />  
-        <Route path="https://expensetracker-sharpner.netlify.app/payment-status/:id" element={<Protected><PaymentStatus /></Protected>} />  
+        <Route path="/payment-status/:id" element={<Protected><PaymentStatus /></Protected>} />  
            
       </Routes>
 
