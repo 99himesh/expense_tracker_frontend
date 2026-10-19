@@ -22,9 +22,11 @@ import FooterExpense from "./FooterExpense"
 import DownloadedExpense from "./DownloadesExpenses"
 import DownloadedExpenses from "./DownloadesExpenses"
 import AddExpense from "./AddExpense"
+import Loader from "../loader/Loader"
 const Expense = () => {
     const [leaderBoardStatus,setLeaderBoardStatus]=useState(false);
-    const [addExpenseModel,setAddExpenseModel]=useState(false)
+    const [addExpenseModel,setAddExpenseModel]=useState(false);
+    const [loading,setIsLoading]=useState(false)
     const navigate=useNavigate();
     const token = Cookies.get("token");
     const [expenseInput, setExpenseInput] = useState({
@@ -65,6 +67,7 @@ const Expense = () => {
    
     const getExpense = async () => {
         try {
+            setIsLoading(true);
             const res = await api.get("/expense/getExpense", {
                 headers: {
                     "Authorization": token
@@ -82,6 +85,8 @@ const Expense = () => {
         } catch (error) {
             console.log(error);
 
+        }finally{
+            setIsLoading(false)
         }
     }
     const addExpenseHandler = async () => {
@@ -90,6 +95,7 @@ const Expense = () => {
         }
         const data = { ...expenseInput }
         try {
+            setIsLoading(true)
             const res = await api.post("/expense/addExpense", data, {
                 headers: {
                     "Authorization": token
@@ -112,18 +118,16 @@ const Expense = () => {
                 toast.error(error.message)
 
 
+        }finally{
+            setIsLoading(false)
         }
     }
-    
-console.log(leaderBoardStatus,"dsfsdfsd");
+ 
+        useEffect(()=>{
+            cheackLeaderBoardStatus();
+        },[])
 
-  
-
-useEffect(()=>{
-    cheackLeaderBoardStatus();
-},[])
-
-   
+   if(loading) return <Loader/>
     return (
         <div className="relative">
         <div className="h-screen overflow-auto  py-10  ">
@@ -144,7 +148,7 @@ useEffect(()=>{
                         <LeaderBoard leaderBoardStatus={leaderBoardStatus} />
                     </Col>
                 </Row>
-               <YourExpense setAddExpenseModel={setAddExpenseModel} addExpenseModel={addExpenseModel} expenseInputHandler={expenseInputHandler} expenseInput={expenseInput} setExpenseInput={setExpenseInput}  addExpenseHandler={addExpenseHandler}  setExpense={setExpense} expense={expense} totalExpense={totalExpense} setTotalExpense={setTotalExpense}/>
+               <YourExpense setIsLoading={setIsLoading} setAddExpenseModel={setAddExpenseModel} addExpenseModel={addExpenseModel} expenseInputHandler={expenseInputHandler} expenseInput={expenseInput} setExpenseInput={setExpenseInput}  addExpenseHandler={addExpenseHandler}  setExpense={setExpense} expense={expense} totalExpense={totalExpense} setTotalExpense={setTotalExpense}/>
                      
            
             </div>

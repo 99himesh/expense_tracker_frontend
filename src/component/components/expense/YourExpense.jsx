@@ -3,7 +3,7 @@ import CustomTable from "../../ui/CustomTable";
 import Cookies from "js-cookie"
 import { useState } from "react";
 import CustomText from "../../ui/CustomText";
-import { Typography } from "antd";
+import { Skeleton, Typography } from "antd";
 import {
     DeleteOutlined
 } from '@ant-design/icons';
@@ -16,10 +16,12 @@ import CustomButton from "../../ui/CustomButton";
 import CustomModal from "../../ui/CustomModal";
 import AddExpense from "./AddExpense";
 import CustomDate from "../../ui/CustomDate";
+import Loader from "../loader/Loader";
 const YourExpense = ({expense,setExpense,totalExpense,setTotalExpense,expenseInputHandler,expenseInput,setExpenseInput,addExpenseHandler,setAddExpenseModel,addExpenseModel}) => {
     const token = Cookies.get("token");
     const [pageSize,setPageSize]=useState(5);
-    const [page,setPage]=useState(1)
+    const [page,setPage]=useState(1);
+    const [loading,setIsLoading]=useState(false)
     const expenseColumn = [
         {
             title: <CustomText value={"Id"} />,
@@ -70,6 +72,7 @@ const YourExpense = ({expense,setExpense,totalExpense,setTotalExpense,expenseInp
 
     const getExpense = async () => {
         try {
+            setIsLoading(true)
             const res = await api.get("/expense/getExpense", {
                 headers: {
                     "Authorization": token
@@ -86,32 +89,34 @@ const YourExpense = ({expense,setExpense,totalExpense,setTotalExpense,expenseInp
         } catch (error) {
             console.log(error);
 
+        }finally{
+            setIsLoading(false)
         }
     }
 
     const expenseDeleteHandler = async (item) => {
         try {
-            const res = await api.delete(`/expense/deleteExpense/${item?._id}`, {
+            setIsLoading(true)
+             const res = await api.delete(`/expense/deleteExpense/${item?._id}`, {
                 headers: {
                     "Authorization": token
                 }
             })
-
-      console.log(res,"fjdsghds");
-      
             if (res?.data?.success) {
                 getExpense();
             }
         } catch (error) {
             console.log(error);
 
+        }finally{
+            setIsLoading(false)
         }
 
     }
   
     useEffect(() => {
         getExpense();
-    }, [page,pageSize])
+    }, [page,pageSize]);
     return (
         <>
             <div className="flex flex-col gap-3  mx-auto pt-5  rounded-t-2xl mt-5 ">
@@ -121,7 +126,7 @@ const YourExpense = ({expense,setExpense,totalExpense,setTotalExpense,expenseInp
                   <CustomButton onclick={()=>{setAddExpenseModel(true)}} value={"Add Expense"}/>
                   </div>
                 </div>
-                <CustomTable scroll={{ y: 400 }} columns={expenseColumn} dataSource={expense} />
+                {<CustomTable scroll={{ y: 400 }} columns={expenseColumn} dataSource={expense} />}
                 <CustomPagination pageSize={pageSize} setPageSize={setPageSize} onchange={(e)=>{setPage(e)}} total={totalExpense} defaultCurrent={page}/>
             </div>
             <CustomModal closeIcon={false} open={addExpenseModel} setOpen={setAddExpenseModel} modalBody={<AddExpense setAddExpenseModel={setAddExpenseModel}  expenseInputHandler={expenseInputHandler} expenseInput={expenseInput} setExpenseInput={setExpenseInput}  addExpenseHandler={addExpenseHandler}/>}/>

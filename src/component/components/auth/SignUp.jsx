@@ -6,9 +6,11 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import api from "../../../axios/axios";
 import { toast } from "react-toastify";
+import Loader from "../loader/Loader";
 
 const SignUp=()=>{
-    const navigate=useNavigate()
+    const navigate=useNavigate();
+    const [isLoading,setIsLoading]=useState(false);
     const [singUpInput,setSignUpInput]=useState({
         name:"",
         email:"",
@@ -28,6 +30,7 @@ const SignUp=()=>{
         }
         const data={...singUpInput}
         try {
+            setIsLoading(true)
             const res=await api.post("/users/signUp",data);
             console.log(res);
             if(res.data.success){
@@ -39,8 +42,11 @@ const SignUp=()=>{
         } catch (error) {
             console.log(error.message);
               toast.error(error.message)
+        }finally{
+            setIsLoading(false)
         }
     }
+    if(isLoading) return <Loader/>;
     return(
         <>
          <div className="w-[50%] h-screen m-auto flex justify-center items-center">

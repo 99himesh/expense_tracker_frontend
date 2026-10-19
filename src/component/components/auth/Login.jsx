@@ -7,8 +7,10 @@ import { Link, useNavigate } from "react-router";
 import Cookies from "js-cookie"
 import api from "../../../axios/axios";
 import { toast } from "react-toastify";
+import Loader from "../loader/Loader";
 const Login=()=>{
-    const navigate=useNavigate()
+    const navigate=useNavigate();
+    const [isLoading,setIsLoading]=useState(false);
     const [loginInput,setloginInput]=useState({
         email:"",
         password:""
@@ -25,12 +27,12 @@ const Login=()=>{
     const loginHandler=async()=>{
          if(!loginInput.email || !loginInput.password){
            return toast.error("Please fill all fields")
-
         }
         const data={...loginInput};
        
         
         try {
+            setIsLoading(true);
             const res=await api.post("/users/login",data);
             if(res.data.success){
                 console.log(res.data.token);
@@ -43,8 +45,11 @@ const Login=()=>{
             toast.error(error.message)
 
             
+        }finally{
+            setIsLoading(false)
         }
     }
+    if(isLoading) return <Loader/>;
     return(
         <>
          <div className="w-[50%] h-screen m-auto flex justify-center items-center">

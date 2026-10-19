@@ -7,9 +7,10 @@ import { Link, useNavigate } from "react-router";
 import Cookies from "js-cookie"
 import api from "../../../axios/axios";
 import { toast } from "react-toastify";
+import Loader from "../loader/Loader";
 const ForgetPassword=()=>{
     const navigate=useNavigate()
-  
+    const [isLoading,setIsLoading]=useState(false);
     const [forgetPassswordinput,setForgetPasswordInput]=useState({
         email:""
     })
@@ -26,7 +27,9 @@ const ForgetPassword=()=>{
             if(!forgetPassswordinput.email ){
                return toast.error("Please fill all fields")
               }
-            try {const data={...forgetPassswordinput}
+            try {
+                setIsLoading(true)
+                const data={...forgetPassswordinput}
                 const res=await api.post("/users/send-forget-password-link",data);
                 if(res.data.success){
                     toast.success(res.data.message);
@@ -36,10 +39,11 @@ const ForgetPassword=()=>{
                 console.log(error); 
                     toast.error(error.message)
 
+            }finally{
+                setIsLoading(false)
             }
         }
-
-   
+    if(isLoading) return <Loader/>;
     return(
         <>
          <div className="w-[50%] h-screen m-auto flex justify-center items-center">

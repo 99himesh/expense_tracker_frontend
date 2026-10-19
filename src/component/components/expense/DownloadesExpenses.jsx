@@ -15,14 +15,14 @@ import CustomSelect from "../../ui/CustomSelect";
 import CustomPagination from "../../ui/CustomPagination";
 import api from "../../../axios/axios";
 import { formatDate } from "../../../constatnts/constants";
+import Loader from "../loader/Loader";
 const DownloadedExpenses = ({expense,setExpense,totalExpense,setTotalExpense,leaderBoardStatus}) => {
-    const token = Cookies.get("token");
+     const token = Cookies.get("token");
+     const [loading,setIsloading]=useState(false);
      const [downloadExpense,setDownloadExpense]=useState([])
-
       const downloadedExpense=async(text)=>{
-        
        try {
-      
+        setIsloading(true)
         const link = document.createElement("a");
         link.href = text.file;
         link.download = `${new Date()}/expenses.txt`; // May be ignored for cross-origin URLs
@@ -33,6 +33,8 @@ const DownloadedExpenses = ({expense,setExpense,totalExpense,setTotalExpense,lea
        } catch (error) {
         console.log(error);
         
+       }finally{
+        setIsloading(false)
        }
     }
     const expenseColumn = [
@@ -63,6 +65,7 @@ const DownloadedExpenses = ({expense,setExpense,totalExpense,setTotalExpense,lea
 
     const getExpense = async () => {
         try {
+            setIsloading(true)
             const res = await api.get("/expense/getDownloadExpense", {
                 headers: {
                     "Authorization": token
@@ -75,15 +78,14 @@ const DownloadedExpenses = ({expense,setExpense,totalExpense,setTotalExpense,lea
         } catch (error) {
             console.log(error);
 
+        }finally{
+            setIsloading(false)
         }
     }
-
-
-   
-  
     useEffect(() => {
         getExpense();
-    }, [])
+    }, []);
+    if(loading) return <Loader/>
     return (
         <>
             <div className="flex flex-col gap-3  mx-auto  rounded-t-2xl mt-5 ">

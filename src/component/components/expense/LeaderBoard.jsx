@@ -10,9 +10,11 @@ import CustomTable from "../../ui/CustomTable";
 import { Typography } from "antd";
 import api from "../../../axios/axios";
 import { formatDate } from "../../../constatnts/constants";
+import Loader from "../loader/Loader";
 const LeaderBoard = ({ leaderBoardStatus }) => {
     const [leaderBoard, setLeaderBoard] = useState([])
     const [orderId, setOrderId] = useState(null);
+    const [loading,setIsLoading]=useState(false);
     const navigate = useNavigate();
     const token = Cookies.get("token");
     let cashfree;
@@ -46,6 +48,7 @@ const LeaderBoard = ({ leaderBoardStatus }) => {
 
     const getLeaderBoard = async () => {
         try {
+            setIsLoading(true)
             const res = await api.get("/users/leaderBoard", {
                 headers: {
                     "authorization": token
@@ -55,6 +58,8 @@ const LeaderBoard = ({ leaderBoardStatus }) => {
         } catch (error) {
             console.log(error);
 
+        }finally{
+            setIsLoading(false);
         }
     }
 
@@ -95,7 +100,6 @@ const LeaderBoard = ({ leaderBoardStatus }) => {
     useEffect(() => {
         getLeaderBoard();
     }, [])
-
     return (
         <div className="">
             {!leaderBoardStatus ?

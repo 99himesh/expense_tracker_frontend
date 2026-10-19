@@ -8,6 +8,7 @@ import { useState } from "react";
 import Loader from "../loader/Loader";
 import api from "../../../axios/axios.jsx";
 import { toast } from "react-toastify";
+import CustomLoader from "../loader/CustomLoader.jsx";
 const CreateYourOwnCategory=({leaderBoardStatus})=>{
     const token=Cookies.get("token");
     const [aiInput,setAiInput]=useState("");
@@ -31,19 +32,14 @@ const CreateYourOwnCategory=({leaderBoardStatus})=>{
                 setAiInput("");
                 setError("")
                 setAnswer(res?.data?.answer)
-
-            }
-            console.log(res,"sdjdsjfbj");
-            
+            }            
         } catch (error) {
-            setIsloading(false)
-            console.log(error);
+             setIsloading(false)
              setError(error);
              toast.error("Gemini 2.5-flash server  is not working properly")
         }
     }
 
-    console.log(error);
     
     return(
         <>
@@ -60,7 +56,7 @@ const CreateYourOwnCategory=({leaderBoardStatus})=>{
            </Popover>
             </div>
             <div className="flex justify-center  w-[50%] mx-auto max-h-[200px] overflow-auto ">
-               {loading && !error ?<Loader/>: <CustomText className={"!text-[14px] text-justify"} value={answer}/>}
+               {loading && !error ?<CustomLoader/>: <CustomText className={"!text-[14px] text-justify"} value={answer}/>}
                {error && <CustomText value={`Gemini 2.5-flash server  is not working properly, Please try again after some time ,sorry for enconvience.${error.message} , `} className={"!text-yellow-500"}/>}
             </div>
         </div>
